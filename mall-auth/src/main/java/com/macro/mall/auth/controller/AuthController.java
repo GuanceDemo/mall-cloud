@@ -6,11 +6,15 @@ import com.macro.mall.common.constant.AuthConstant;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.endpoint.TokenEndpoint;
-import org.springframework.web.HttpRequestMethodNotSupportedException;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
@@ -24,7 +28,7 @@ import java.util.Map;
 @Api(tags = "AuthController", description = "认证中心登录认证")
 @RequestMapping("/oauth")
 public class AuthController {
-
+    private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
     @Autowired
     private TokenEndpoint tokenEndpoint;
 
@@ -36,7 +40,7 @@ public class AuthController {
                                                         @ApiParam("Oauth2客户端秘钥") @RequestParam String client_secret,
                                                         @ApiParam("刷新token") @RequestParam(required = false) String refresh_token,
                                                         @ApiParam("登录用户名") @RequestParam(required = false) String username,
-                                                        @ApiParam("登录密码") @RequestParam(required = false) String password) throws HttpRequestMethodNotSupportedException {
+                                                        @ApiParam("登录密码") @RequestParam(required = false) String password) throws Exception {
         Map<String, String> parameters = new HashMap<>();
         parameters.put("grant_type",grant_type);
         parameters.put("client_id",client_id);
@@ -44,13 +48,17 @@ public class AuthController {
         parameters.putIfAbsent("refresh_token",refresh_token);
         parameters.putIfAbsent("username",username);
         parameters.putIfAbsent("password",password);
-        OAuth2AccessToken oAuth2AccessToken = tokenEndpoint.postAccessToken(request.getUserPrincipal(), parameters).getBody();
-        Oauth2TokenDto oauth2TokenDto = Oauth2TokenDto.builder()
-                .token(oAuth2AccessToken.getValue())
-                .refreshToken(oAuth2AccessToken.getRefreshToken().getValue())
-                .expiresIn(oAuth2AccessToken.getExpiresIn())
-                .tokenHead(AuthConstant.JWT_TOKEN_PREFIX).build();
-
-        return CommonResult.success(oauth2TokenDto);
+        try {
+            OAuth2AccessToken oAuth2AccessToken = tokenEndpoint.postAccessToken(request.getUserPrincipal(), parameters).getBody();
+            Oauth2TokenDto oauth2TokenDto = Oauth2TokenDto.builder()
+                    .token(oAuth2AccessToken.getValue())
+                    .refreshToken(oAuth2AccessToken.getRefreshToken().getValue())
+                    .expiresIn(oAuth2AccessToken.getExpiresIn())
+                    .tokenHead(AuthConstant.JWT_TOKEN_PREFIX).build();
+            return CommonResult.success(oauth2TokenDto);
+        } catch (Exception e){
+            logger.error("登陆异常",e);
+            throw e;
+        }
     }
 }
