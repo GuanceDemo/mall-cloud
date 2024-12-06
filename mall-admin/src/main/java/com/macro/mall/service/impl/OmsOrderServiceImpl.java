@@ -111,6 +111,7 @@ public class OmsOrderServiceImpl implements OmsOrderService {
         order.setReceiverRegion(receiverInfoParam.getReceiverRegion());
         order.setModifyTime(new Date());
         int count = orderMapper.updateByPrimaryKeySelective(order);
+
         //插入操作记录
         OmsOrderOperateHistory history = new OmsOrderOperateHistory();
         history.setOrderId(receiverInfoParam.getOrderId());
