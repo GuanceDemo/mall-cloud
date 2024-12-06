@@ -13,8 +13,6 @@ import com.macro.mall.service.OmsOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -37,12 +35,7 @@ public class OmsOrderServiceImpl implements OmsOrderService {
     @Override
     public List<OmsOrder> list(OmsOrderQueryParam queryParam, Integer pageSize, Integer pageNum) {
         PageHelper.startPage(pageNum, pageSize);
-        // 获取原始订单列表
-        List<OmsOrder> orderList = orderDao.getList(queryParam);
-
-        // 对订单列表按创建时间进行降序排序
-        Collections.sort(orderList, Comparator.comparing(OmsOrder::getCreateTime).reversed());
-        return orderList;
+        return orderDao.getList(queryParam);
     }
 
     @Override
@@ -111,8 +104,6 @@ public class OmsOrderServiceImpl implements OmsOrderService {
         order.setReceiverRegion(receiverInfoParam.getReceiverRegion());
         order.setModifyTime(new Date());
         int count = orderMapper.updateByPrimaryKeySelective(order);
-
-
         //插入操作记录
         OmsOrderOperateHistory history = new OmsOrderOperateHistory();
         history.setOrderId(receiverInfoParam.getOrderId());
