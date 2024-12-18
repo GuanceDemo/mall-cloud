@@ -78,5 +78,3 @@ jobs:
   call-workflow-b:
     needs: build_and_push_images
     uses: ./.github/workflows/deploy-k8s.yml
-    with:
-      param1: value1
