@@ -5,6 +5,19 @@ usage() {
 	echo "Usage: sh copy-jar.sh"
 	exit 1
 }
-# copy jar
-echo "begin copy mall-admin "
-cp ../mall-admin/target/mall-admin.jar ./backend/mall-admin.jar
+
+SERVICES=("gateway" "admin" "auth" "portal" "search")
+
+# 定义复制文件的函数
+copy_service_jar() {
+  local service_name=$1
+  cp "../mall-$service_name/target/mall-$service_name.jar" "./backend/mall-$service_name/app.jar"
+}
+
+# 复制所有服务的jar文件
+for service in "${SERVICES[@]}"; do
+  # copy jar
+  echo "begin copy mall-$service "
+  copy_service_jar $service
+done
+

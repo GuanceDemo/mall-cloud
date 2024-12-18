@@ -4,9 +4,9 @@ MAINTAINER liurui
 RUN /bin/cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 RUN echo 'Asia/Shanghai' >/etc/timezone
 
-ENV jar mall_admin.jar
+ENV jar app.jar
 ENV workdir /data/app/
 RUN mkdir -p ${workdir}
 COPY .${jar} ${workdir}
 WORKDIR ${workdir}
-ENTRYPOINT ["sh", "-ec", "exec java ${JAVA_OPTS} -jar ${jar} ${PARAMS} 2>&1 "]
+ENTRYPOINT ["sh", "-ec", "exec java ${JAVA_OPTS} -jar ${jar} ${PARAMS}"]
