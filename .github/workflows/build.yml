@@ -75,6 +75,3 @@ jobs:
             ${{ vars.DOCKER_REGISTRY }}/${{ vars.DOCKER_NAMESPACE }}/${{ matrix.file_tag.repo }}:latest
           cache-from: type=gha
           cache-to: type=gha
-  call-workflow-b:
-    needs: build_and_push_images
-    uses: ./.github/workflows/deploy-k8s.yml
