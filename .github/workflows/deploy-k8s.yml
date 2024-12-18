@@ -1,6 +1,7 @@
 name: Deploy on Kubernetes
 
 on:
+  workflow_call:
 
 jobs:
   deploy:
