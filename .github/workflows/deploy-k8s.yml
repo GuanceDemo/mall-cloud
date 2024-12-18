@@ -1,0 +1,20 @@
+name: Deploy on Kubernetes
+
+on:
+  workflow_call:
+    inputs:
+      param1:
+        required: true
+        type: string
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up kubectl
+        uses: azure/k8s-set-context@v1
+        with:
+          kubeconfig: ${{ secrets.KUBECONFIG_VKE }}
+
+      - name: Deploy on Kubernetes
+        run: kubectl get nodes
