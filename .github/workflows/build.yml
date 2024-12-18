@@ -1,0 +1,10 @@
+name: Build and push mall images
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'src/**'
+  workflow_dispatch:
+
