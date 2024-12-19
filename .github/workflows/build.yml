@@ -17,7 +17,18 @@ jobs:
           - file: ./docker/backend/mall-admin/Dockerfile
             repo: mall-admin
             context: ./docker/backend/mall-admin
-
+          - file: ./docker/backend/mall-auth/Dockerfile
+            repo: mall-auth
+            context: ./docker/backend/mall-auth
+          - file: ./docker/backend/mall-gateway/Dockerfile
+            repo: mall-gateway
+            context: ./docker/backend/mall-gateway
+          - file: ./docker/backend/mall-portal/Dockerfile
+            repo: mall-portal
+            context: ./docker/backend/mall-portal
+          - file: ./docker/backend/mall-search/Dockerfile
+            repo: mall-search
+            context: ./docker/backend/mall-search
     steps:
       - name: Set up Java
         uses: actions/setup-java@v1
