@@ -1,4 +1,4 @@
-FROM eclipse-temurin:8u382-b05-jre
+FROM eclipse-temurin:11-jre
 MAINTAINER liurui
 
 RUN /bin/cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
